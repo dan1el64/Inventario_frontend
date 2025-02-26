@@ -22,8 +22,7 @@ Clona el repositorio y navega dentro de la carpeta:
 
 ```sh
 # Clonar el repositorio
-git clone https://github.com/usuario/proyecto-angular.git
-cd proyecto-angular
+git clone https://github.com/dan1el64/Inventario_frontend.git
 ```
 
 Instala las dependencias:
@@ -55,8 +54,8 @@ proyecto-angular/
 │   │   ├── services/
 │   │   │   ├── product.service.ts
 │   │   │   ├── product.service.spec.ts
-│   ├── assets/
-│   ├── environments/
+│   │   ├── models/
+│   │   │   ├── product.model.ts
 │── angular.json
 │── package.json
 │── README.md
@@ -87,12 +86,9 @@ export const environment = {
 - Jest para pruebas unitarias
 - TypeScript
 
-## ✨ Contribuir
-Si deseas contribuir, por favor sigue estos pasos:
-1. Haz un **fork** del repositorio.
-2. Crea una **nueva rama** (`feature/nueva-funcionalidad`).
-3. Realiza los cambios y **haz un commit**.
-4. Envía un **pull request**.
+## 🌐 **Despliegue en AWS**
+Para un despliegue en AWS, se recomienda:
+- **Frontend**: AWS S3 + CloudFront.
 
 ## 📜 Licencia
 Este proyecto está bajo la licencia MIT.
