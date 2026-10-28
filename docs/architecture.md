@@ -2,6 +2,11 @@
 
 This is a layered application. The separate [hexagonal labs](https://github.com/dan1el64/hexagonal-architecture-labs) demonstrate ports and adapters.
 
+![Inventory request architecture](inventory-request.svg)
+
+<details>
+<summary>Editable Mermaid source</summary>
+
 ```mermaid
 flowchart LR
   B[Browser] --> W[Angular reactive forms and product table]
@@ -11,6 +16,8 @@ flowchart LR
   S --> R[Spring Data JPA repository]
   R --> DB[(PostgreSQL in Docker / H2 locally)]
 ```
+
+</details>
 
 ## Request and failure boundaries
 
@@ -22,6 +29,11 @@ flowchart LR
 
 ## Local deployment
 
+![Local deployment architecture](inventory-deployment.svg)
+
+<details>
+<summary>Editable Mermaid source</summary>
+
 ```mermaid
 flowchart TB
   H[Host browser localhost:4200] --> WEB[web: Nginx and Angular]
@@ -30,6 +42,8 @@ flowchart TB
   PG --- V[Named local Docker volume]
   DEV[Host localhost:8080] --> API
 ```
+
+</details>
 
 The database health check precedes API startup; API health precedes web startup. Published ports bind to loopback. `scripts/demo.sh` in the backend repository composes all three services and clones the frontend sibling if missing.
 
