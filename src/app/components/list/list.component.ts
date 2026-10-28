@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormComponent } from '../form/form.component';
 import { Product } from '../../models/product.model';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-list',
@@ -18,6 +19,8 @@ import { Product } from '../../models/product.model';
 })
 export class ListComponent implements OnInit {
   products: Product[] = [];
+  loading = false;
+  error = '';
   private productService = inject(ProductService);
   private dialog = inject(MatDialog);
 
@@ -28,12 +31,14 @@ export class ListComponent implements OnInit {
   }
 
   loadProducts(): void {
-    this.productService.getProducts().subscribe(response => {
-      if (response.success) {
-        this.products = response.data;
-      } else {
-        console.error(response.message);
-      }
+    this.loading = true;
+    this.error = '';
+    this.productService.getProducts().pipe(finalize(() => this.loading = false)).subscribe({
+      next: response => {
+        if (response.success) this.products = response.data;
+        else this.error = 'No se pudieron cargar los productos. Intenta de nuevo.';
+      },
+      error: () => this.error = 'No se pudo conectar con el inventario. Intenta de nuevo.'
     });
   }
 
@@ -52,8 +57,9 @@ export class ListComponent implements OnInit {
 
   deleteProduct(id: number): void {
     if (confirm('¿Estás seguro de eliminar este producto?')) {
-      this.productService.deleteProduct(id).subscribe(() => {
-        this.loadProducts();
+      this.productService.deleteProduct(id).subscribe({
+        next: () => this.loadProducts(),
+        error: () => this.error = 'No se pudo eliminar el producto. Intenta de nuevo.'
       });
     }
   }

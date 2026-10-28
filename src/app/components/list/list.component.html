@@ -1,5 +1,13 @@
 <mat-card class="product-container">
-  <mat-card-title>Lista de Productos</mat-card-title>
+  <h1>Inventario de productos</h1>
+  <p>Demostración local con datos de ejemplo.</p>
+  <p *ngIf="loading" role="status">Cargando productos…</p>
+  <div *ngIf="error" role="alert">
+    <p>{{ error }}</p>
+    <button mat-button (click)="loadProducts()" [disabled]="loading">Reintentar</button>
+  </div>
+  <p *ngIf="!loading && !error && products.length === 0">Todavía no hay productos. Agrega el primero.</p>
+  <div class="table-scroll" role="region" aria-label="Productos" tabindex="0">
   <mat-table [dataSource]="products" mat-table>
     
     <ng-container matColumnDef="name">
@@ -26,11 +34,11 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef> Acciones </mat-header-cell>
       <mat-cell *matCellDef="let product">
-        <button mat-icon-button color="primary" (click)="openForm(product)">
-          <mat-icon>edit</mat-icon>
+        <button mat-icon-button color="primary" (click)="openForm(product)" [attr.aria-label]="'Editar ' + product.name">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m15 5 4 4M4 20l5-1L20 8a2.8 2.8 0 0 0-4-4L5 15z"/></svg>
         </button>
-        <button mat-icon-button color="warn" (click)="deleteProduct(product.id)">
-          <mat-icon>delete</mat-icon>
+        <button mat-icon-button color="warn" (click)="deleteProduct(product.id)" [attr.aria-label]="'Eliminar ' + product.name">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h18M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7"/></svg>
         </button>
       </mat-cell>
     </ng-container>
@@ -38,9 +46,10 @@
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+  </div>
 </mat-card>
 
 <!-- Botón flotante para agregar producto -->
-<button mat-fab color="primary" class="add-button" (click)="openForm()">
-  <mat-icon>add</mat-icon>
+<button mat-fab color="primary" class="add-button" (click)="openForm()" aria-label="Agregar producto">
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 4v16M4 12h16"/></svg>
 </button>

@@ -1,15 +1,10 @@
-# Usamos Node como base para construir la app
-FROM node:18 AS build
-
+FROM node:22-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci --ignore-scripts
 COPY . .
-RUN npm run build --prod
-
-# Usamos nginx para servir la app
+RUN npm run build
 FROM nginx:alpine
-COPY --from=build /app/dist/inventory-app /usr/share/nginx/html
-
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist/inventory-app/browser /usr/share/nginx/html
 EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]

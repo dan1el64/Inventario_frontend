@@ -6,7 +6,7 @@ import { Product } from '../models/product.model';
 describe('ProductService', () => {
   let service: ProductService;
   let httpMock: HttpTestingController;
-  const apiUrl = 'http://localhost:8080/api/v1/products';
+  const apiUrl = '/api/v1/products';
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -28,36 +28,36 @@ describe('ProductService', () => {
     ];
 
     service.getProducts().subscribe((products) => {
-      expect(products).toEqual(mockProducts as any);
+      expect(products.data).toEqual(mockProducts);
     });
 
     const req = httpMock.expectOne(apiUrl);
     expect(req.request.method).toBe('GET');
-    req.flush(mockProducts);
+    req.flush({ success: true, message: 'OK', data: mockProducts });
   });
 
   it('debe agregar un producto', () => {
     const newProduct: Product = { id: 2, name: 'Mouse', category: 'Accesorios', price: 20, stock: 15 };
 
     service.createProduct(newProduct).subscribe((product) => {
-      expect(product).toEqual(newProduct as any);
+      expect(product.data).toEqual(newProduct);
     });
 
     const req = httpMock.expectOne(apiUrl);
     expect(req.request.method).toBe('POST');
-    req.flush(newProduct);
+    req.flush({ success: true, message: 'OK', data: newProduct });
   });
 
   it('debe modificar un producto', () => {
     const updatedProduct: Product = { id: 1, name: 'Teclado Gamer', category: 'Accesorios', price: 60, stock: 25 };
 
     service.updateProduct(1, updatedProduct).subscribe((product) => {
-      expect(product).toEqual(updatedProduct as any);
+      expect(product.data).toEqual(updatedProduct);
     });
 
     const req = httpMock.expectOne(`${apiUrl}/1`);
     expect(req.request.method).toBe('PUT');
-    req.flush(updatedProduct);
+    req.flush({ success: true, message: 'OK', data: updatedProduct });
   });
 
   it('debe eliminar un producto', () => {
