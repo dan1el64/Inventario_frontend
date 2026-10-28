@@ -6,6 +6,8 @@ A product-inventory interface backed by the [Spring Boot API](https://github.com
 
 ![Desktop inventory](docs/screenshots/inventory-desktop.png)
 
+[Architecture and decisions](docs/architecture.md) · [Published case study](https://www.dan1el64.com/portafolio#inventario)
+
 ## Run the complete demo
 
 The backend repository provides a single-command launcher for PostgreSQL, API and this interface:
